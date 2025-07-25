@@ -5642,6 +5642,21 @@ fn test_aix(target: &str) {
         // Skip 'sighandler_t' assignments.
         "SIG_DFL" | "SIG_ERR" | "SIG_IGN" => true,
 
+        // FIXME(ctest): These constants are intended for use as the 'int request' argument
+        // to 'ioctl()'. However, the AIX headers do not explicitly define their types. If a
+        // value has the sign bit set, it gets sign-extended to a 64-bit value in the 64-bit
+        // mode, which fails the comparison with the Rust definitions, where the type is
+        //`c_int`.
+        "BIOCSETF" | "BIOCSBLEN" | "BIOCSRTIMEOUT" | "BIOCIMMEDIATE" | "BIOCSETIF" | "FIONBIO"
+        | "FIOASYNC" | "FIOSETOWN" | "TIOCSETD" | "TIOCMODS" | "TIOCSETP" | "TIOCSETN"
+        | "TIOCFLUSH" | "TIOCSETC" | "SIOCADDMULTI" | "SIOCADDRT" | "SIOCDARP" | "SIOCDELMULTI"
+        | "SIOCGIFADDR" | "SIOCGIFBRDADDR" | "SIOCGIFCONF" | "SIOCGIFDSTADDR" | "SIOCGIFFLAGS"
+        | "SIOCGIFHWADDR" | "SIOCGIFMETRIC" | "SIOCGIFMTU" | "SIOCGIFNETMASK" | "SIOCSARP"
+        | "SIOCSIFADDR" | "SIOCSIFBRDADDR" | "SIOCSIFDSTADDR" | "SIOCSIFFLAGS"
+        | "SIOCSIFMETRIC" | "SIOCSIFMTU" | "SIOCSIFNETMASK" | "TIOCUCNTL" | "TIOCCONS"
+        | "TIOCPKT" | "TIOCSWINSZ" | "TIOCLBIS" | "TIOCLBIC" | "TIOCLSET" | "TIOCSLTC"
+        | "TIOCSPGRP" | "TIOCSTI" | "TIOCMSET" | "TIOCMBIS" | "TIOCMBIC" | "TIOCREMOTE" => true,
+
         _ => false,
     });
 
